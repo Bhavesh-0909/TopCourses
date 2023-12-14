@@ -3,16 +3,14 @@ import Navbar from "./components/Navbar";
 import Filter from "./components/Filter";
 import Cards from "./components/Cards";
 import { filterData, apiUrl } from "./data";
+import { Toast } from "react-toastify/dist/components";
 
 const App = () => {
-  return (
-    <div className="w-screen h-auto bg-[#35155D]">
+  const [courses, setCourses] = useState([]);
 
-      const [courses, setCourses] = useState([]);
+  useEffect(() => {
+    const fetchCourses = async () => {
 
-      useEffect(() => {
-
-      const fetchCourses = async () => {
       try {
         const res = await fetch(apiUrl);
         const data = await res.json();
@@ -22,17 +20,16 @@ const App = () => {
         console.error('Error fetching data:', error);
       }
     };
-    fetchCourses();
+  fetchCourses();
   }, []);
 
-
-
-      <Navbar/>
-
+  return (
+    <div className="w-screen h-auto bg-[#35155D]">
+      <Navbar />
       <Filter filterData={filterData} />
-
-      <Cards/>
-
+      {
+        <Cards courses={courses} /> 
+      }
     </div>
   );
 };
