@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./Card";
+import { computeHeadingLevel } from "@testing-library/react";
 
-function Cards({ courses }) {
-  // Remove the unnecessary console.log(courses);
+function Cards(props){
+    const courses = props.courses;
+    const category = props.category;
+    const setCategory = props.setCategory;
+    const [like, setLike] = useState([]);
 
-  // Flatten the courses array using flat() or concat.apply()
-  const allCourses = [].concat.apply([], courses); // Using concat.apply() for older browser compatibility
+    const getcourses = ()=> {
+        if( category === "All"){
+            let allcourses = [];
+            Object.values(courses).forEach((array)=>{
+                array.forEach(courseData =>{
+                    allcourses.push(courseData);
+                })
+            })
+            console.log(allcourses);
+            return allcourses;
+        }
+        else{
+            return courses[category];
+        }
+    }
 
-  console.log(allCourses);
-
-  return (
-    <div>
-      {
-        allCourses.map((course) => (
-          <Card key={course.id} course={course} />
-        ))
-      }
-    </div>
-  );
+    return(
+        <div className="flex flex-wrap justify-evenly mt-10 gap-5 w-[80%] mx-auto">
+        {
+            getcourses().map((course)=><Card key={course.id} course={course} like={like} setLike={setLike}/>)
+            
+        }
+        
+        </div>
+    );
 }
 
 export default Cards;
